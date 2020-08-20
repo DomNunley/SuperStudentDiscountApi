@@ -12,7 +12,7 @@ namespace SuperStudentDiscountApi.Controllers
 {
     public class SuperStudentDiscountController : ControllerBase
     {
-        [HttpGet("superstudentdiscount")]
+        [HttpPost("superstudentdiscount")]
         public ActionResult<SuperStudentDiscountResult> GetSuperStudentDiscount([FromBody] DriverRequestInfo driverRequestInfo)
         {
             if(!ModelState.IsValid)
