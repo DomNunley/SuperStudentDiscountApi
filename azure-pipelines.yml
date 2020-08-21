@@ -27,5 +27,6 @@ stages:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         containerRegistry: 'dockerhub'
+        repository: 'dnunley/$(serviceName)'
         tags: |
           $(tag)
