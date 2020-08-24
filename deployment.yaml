@@ -40,6 +40,6 @@ spec:
     spec:
       containers:
       - name: superstudentdiscountapi
-        image: emandere/superstudentdiscountapi:{buildId}
+        image: dnunley/superstudentdiscountapi:{buildId}
         ports:
         - containerPort: 80
