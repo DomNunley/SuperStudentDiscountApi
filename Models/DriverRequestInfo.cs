@@ -4,6 +4,8 @@ namespace SuperStudentDiscountApi.Models
 {
     public class DriverRequestInfo
     {
+        public string State { get; set; }
+
         public int DriverAge { get; set; }
 
         public double DriverGPA { get; set; }
