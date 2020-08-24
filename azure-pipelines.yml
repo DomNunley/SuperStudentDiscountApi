@@ -14,7 +14,7 @@ variables:
   serviceName: 'superstudentdiscountapi'
   ImageName: 'emandere/$(serviceName)'
   DeploymentPath: '/home/ec2-user/deployments/$(serviceName)/$(releaseTag)'
-  GitHubDeploymentPath: 'https://raw.githubusercontent.com/dnunley17/$(serviceName)/master/deployment.yaml'
+  GitHubDeploymentPath: 'https://raw.githubusercontent.com/domnunley/$(serviceName)/master/deployment.yaml'
   DeploymentConfigPath: '/home/ec2-user/deployments/$(serviceName)/$(releaseTag)/deployment.yaml'
 
 stages:
