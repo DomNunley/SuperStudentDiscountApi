@@ -26,8 +26,9 @@ namespace SuperStudentDiscountApi.Mapper
             return discounts.Select((discountMongo) => _mapper.Map<SuperStudentDiscountDTO>(discountMongo)).ToList();
         }
 
-        public async Task UpdateDiscount(SuperStudentDiscountDTO discountDTO)
+        public async Task<bool> UpdateDiscount(SuperStudentDiscountDTO discountDTO)
         {
+            
             var studentDiscount = _mapper.Map<SuperStudentDiscountMongo>(discountDTO);
             var findDiscount = await _context.SuperStudentDiscounts.FindAsync(x => x.State == studentDiscount.State);
             if(findDiscount!=null)
@@ -39,6 +40,7 @@ namespace SuperStudentDiscountApi.Mapper
             {
                 await _context.SuperStudentDiscounts.InsertOneAsync(studentDiscount);
             }
+            return true;
         }
     }
 }

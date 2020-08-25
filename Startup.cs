@@ -26,6 +26,8 @@ namespace SuperStudentDiscountApi
             Configuration = configuration;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -53,6 +55,20 @@ namespace SuperStudentDiscountApi
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    var origins = Configuration.GetSection("CORS:origins").GetChildren();
+                    foreach(var origin in origins)
+                    {
+                        builder.WithOrigins(origin.Value).AllowAnyHeader();
+                    }
+
+                });
+            });
+
             services.AddTransient<SuperStudentDiscountMap,SuperStudentDiscountMap>();
             services.AddAutoMapper(c=>c.AddProfiles(profiles),typeof(Startup));
 
@@ -65,8 +81,8 @@ namespace SuperStudentDiscountApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();
 
