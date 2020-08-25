@@ -13,9 +13,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SuperStudentDiscountApi.Domain;
 using SuperStudentDiscountApi.Models;
 using SuperStudentDiscountApi.Mapper;
 using SuperStudentDiscountApi.Config;
+using SuperStudentDiscountApi.Services;
 
 namespace SuperStudentDiscountApi
 {
@@ -70,6 +72,8 @@ namespace SuperStudentDiscountApi
             });
 
             services.AddTransient<SuperStudentDiscountMap,SuperStudentDiscountMap>();
+            services.AddTransient<SuperStudentDiscountCriteria,SuperStudentDiscountCriteria>();
+            services.AddTransient<SuperStudentDiscountResultProcessor,SuperStudentDiscountResultProcessor>();
             services.AddAutoMapper(c=>c.AddProfiles(profiles),typeof(Startup));
 
         }
@@ -81,7 +85,7 @@ namespace SuperStudentDiscountApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();

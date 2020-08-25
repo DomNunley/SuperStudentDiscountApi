@@ -7,13 +7,21 @@ using Microsoft.Extensions.Logging;
 using SuperStudentDiscountApi.Domain;
 using SuperStudentDiscountApi.Models;
 using SuperStudentDiscountApi.Services;
+using SuperStudentDiscountApi.Mapper;
 
 namespace SuperStudentDiscountApi.Controllers
 {
     public class SuperStudentDiscountController : ControllerBase
     {
+        private readonly SuperStudentDiscountResultProcessor _discountProcessor;
+        private readonly SuperStudentDiscountMap _superStudentDiscountMap;
+        public SuperStudentDiscountController(SuperStudentDiscountResultProcessor discountProcessor, SuperStudentDiscountMap superStudentDiscountMap)
+        {
+            _discountProcessor = discountProcessor;
+            _superStudentDiscountMap = superStudentDiscountMap;
+        }
         [HttpPost("superstudentdiscount")]
-        public ActionResult<SuperStudentDiscountResult> GetSuperStudentDiscount([FromBody] DriverRequestInfo driverRequestInfo)
+        public async Task<ActionResult<SuperStudentDiscountResult>> GetSuperStudentDiscount([FromBody] DriverRequestInfo driverRequestInfo)
         {
             if(!ModelState.IsValid)
             {
@@ -21,9 +29,10 @@ namespace SuperStudentDiscountApi.Controllers
             }
 
             DriverRequestInputsConverter requestConverter = new DriverRequestInputsConverter(driverRequestInfo);
-            SuperStudentDiscountCriteria criteria = requestConverter.ConvertDriverRequest();
-            SuperStudentDiscountResultProcessor discountProcessor = new SuperStudentDiscountResultProcessor(criteria);
-            var response = discountProcessor.GetEligibilityResult();
+            SuperStudentDiscountCriteria driver = requestConverter.ConvertDriverRequest();
+            //SuperStudentDiscountResultProcessor discountProcessor = new SuperStudentDiscountResultProcessor(criteria);
+            var parms = await _superStudentDiscountMap.GetDiscountParms(driverRequestInfo.State);
+            var response = _discountProcessor.GetEligibilityResult(parms,driver);
             return Ok(response);
         }
     }
