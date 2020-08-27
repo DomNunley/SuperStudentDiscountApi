@@ -82,18 +82,18 @@ stages:
       displayName: 'PowerShell Script'
       inputs:
         scriptType: inlineScript
-        inlineScript: |
-        # You can write your powershell scripts inline here.
-        # You can also pass predefined and custom variables to this scripts using arguments
-        $C = Invoke-RestMethod -Uri http://54.210.38.124/servicetest/superstudentdiscounttestrunner -TimeoutSec 10
-        if ($C.hasAllTestRunsPass)
-        {
-            Write-Host "Test Passed"
-            exit 0  
-        }
-        else
-        {
-            Write-Host "Test failed"
-            exit -1
-        }
+        inlineScript: |-
+          # You can write your powershell scripts inline here.
+          # You can also pass predefined and custom variables to this scripts using arguments
+          $C = Invoke-RestMethod -Uri http://54.210.38.124/servicetest/superstudentdiscounttestrunner -TimeoutSec 10
+          if ($C.hasAllTestRunsPass)
+          {
+              Write-Host "Test Passed"
+              exit 0  
+          }
+          else
+          {
+              Write-Host "Test failed"
+              exit -1
+          }
               
