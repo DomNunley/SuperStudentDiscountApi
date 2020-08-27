@@ -74,7 +74,7 @@ stages:
   displayName: Call Test Runner
   jobs:  
   - job: CallAPI
-    displayName: Call API
+    displayName: Call TestRunner API
     pool:
       vmImage: 'windows-latest'
     steps:
