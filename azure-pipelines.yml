@@ -35,6 +35,7 @@ stages:
         repository: '$(ImageName)'
         tags: |
           $(tag)
+        
 - stage: Deploy
   jobs:
     # track deployments on the environment
@@ -68,3 +69,31 @@ stages:
               inputs:
                 sshEndpoint: 'awshost'
                 commands: 'k3s kubectl rollout status deployment.v1.apps/$(serviceName)'
+
+- stage: Call TestRunner
+  displayName: Build image
+  jobs:  
+  - job: CallAPI
+    displayName: Call API
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: PowerShell@1
+      displayName: 'PowerShell Script'
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
+        # You can write your powershell scripts inline here.
+        # You can also pass predefined and custom variables to this scripts using arguments
+        $C = Invoke-RestMethod -Uri http://54.210.38.124/servicetest/superstudentdiscounttestrunner -TimeoutSec 10
+        if ($C.hasAllTestRunsPass)
+        {
+            Write-Host "Test Passed"
+            exit 0  
+        }
+        else
+        {
+            Write-Host "Test failed"
+            exit -1
+        }
+              
