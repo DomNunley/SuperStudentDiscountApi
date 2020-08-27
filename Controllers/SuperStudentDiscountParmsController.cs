@@ -38,6 +38,13 @@ namespace SuperStudentDiscountApi.Controllers
             };
             return Ok(discountsDTO);
         }
+
+        [HttpGet("{state}")]
+        public async Task<ActionResult> Get(string state)
+        {
+            var result = await _superStudentDiscountMap.GetDiscountParms(state);
+            return Ok(result);
+        }
     }
 }
         
