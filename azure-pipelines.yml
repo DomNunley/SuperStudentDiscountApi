@@ -70,8 +70,8 @@ stages:
                 sshEndpoint: 'awshost'
                 commands: 'k3s kubectl rollout status deployment.v1.apps/$(serviceName)'
 
-- stage: Call TestRunner
-  displayName: Build image
+- stage: CallTestRunner
+  displayName: Call Test Runner
   jobs:  
   - job: CallAPI
     displayName: Call API
