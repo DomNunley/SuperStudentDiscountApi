@@ -19,7 +19,7 @@ namespace SuperStudentDiscountApi.Services
         {
             bool isEligible = false;
 
-            if(driver.DriverAge < parms.DriverAge && 
+            if(driver.DriverAge > parms.DriverAge && 
                 driver.DriverGPA >= parms.DriverEligibleGPA && 
                 driver.DriverHasNoViolations && 
                 driver.IsFullTimeStudent &&
