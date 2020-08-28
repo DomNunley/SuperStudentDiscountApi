@@ -94,6 +94,7 @@ stages:
           else
           {
               Write-Host "Test failed"
+              Write-Host "http://54.210.38.124/combtestdiscount"
               exit -1
           }
               
