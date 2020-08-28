@@ -11,16 +11,19 @@ using SuperStudentDiscountApi.Mapper;
 
 namespace SuperStudentDiscountApi.Controllers
 {
+    [Route("api/[controller]")]
     public class SuperStudentDiscountController : ControllerBase
     {
         private readonly SuperStudentDiscountResultProcessor _discountProcessor;
         private readonly SuperStudentDiscountMap _superStudentDiscountMap;
+
         public SuperStudentDiscountController(SuperStudentDiscountResultProcessor discountProcessor, SuperStudentDiscountMap superStudentDiscountMap)
         {
             _discountProcessor = discountProcessor;
             _superStudentDiscountMap = superStudentDiscountMap;
         }
-        [HttpPost("superstudentdiscount")]
+        
+        [HttpPost]
         public async Task<ActionResult<SuperStudentDiscountResult>> GetSuperStudentDiscount([FromBody] DriverRequestInfo driverRequestInfo)
         {
             if(!ModelState.IsValid)
