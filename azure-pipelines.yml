@@ -103,7 +103,7 @@ stages:
   displayName: E2E testing
   jobs:  
   - job: CallAPI
-    displayName: Call TestRunner API
+    displayName: Call E2E API
     pool:
       vmImage: 'windows-latest'
     steps:
