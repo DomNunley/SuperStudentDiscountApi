@@ -114,14 +114,15 @@ stages:
         inlineScript: |-
           try 
           {
-             $C = Invoke-RestMethod -Uri http://$(ServerIP)/serviceuitest/ap/e2e -TimeoutSec 10
+             $C = Invoke-RestMethod -Uri http://$(ServerIP)/serviceuitest/api/e2e -TimeoutSec 10
              Write-Host "E2E tests passed"
+             exit 0
           } 
           catch 
           {
              Write-Host "E2E test failed"
              Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
              Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
-             return -1
+             exit -1
           }
               
