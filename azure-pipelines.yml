@@ -71,8 +71,36 @@ stages:
                 sshEndpoint: 'awshost'
                 commands: 'k3s kubectl rollout status deployment.v1.apps/$(serviceName)'
 
+- stage: CallIntegrationRunner
+  displayName: Integration Testing
+  jobs:  
+  - job: CallAPI
+    displayName: Call Integration API
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: PowerShell@1
+      displayName: 'PowerShell Script'
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |-
+          # You can write your powershell scripts inline here.
+          # You can also pass predefined and custom variables to this scripts using arguments
+          $C = Invoke-RestMethod -Uri http://$(ServerIP)/servicetest/api/bizintegrationtestrunner -TimeoutSec 10
+          if ($C.hasAllTestRunsPass)
+          {
+              Write-Host "Test Passed"
+              exit 0  
+          }
+          else
+          {
+              Write-Host "Test failed"
+              Write-Host "http://$(ServerIP)/combtestdiscount"
+              exit -1
+          }
+
 - stage: CallTestRunner
-  displayName: Combo Testing
+  displayName: Combinatorial Testing
   jobs:  
   - job: CallAPI
     displayName: Call TestRunner API
@@ -98,6 +126,8 @@ stages:
               Write-Host "http://$(ServerIP)/combtestdiscount"
               exit -1
           }
+
+
 
 - stage: CallE2E
   displayName: E2E testing
