@@ -13,6 +13,7 @@ variables:
   releaseTag: '$(Build.BuildNumber)'
   serviceName: 'superstudentdiscountapi'
   ImageName: 'dnunley/$(serviceName)'
+  ServerIP: '54.208.9.185'
   DeploymentPath: '/home/ec2-user/deployments/$(serviceName)/$(releaseTag)'
   GitHubDeploymentPath: 'https://raw.githubusercontent.com/domnunley/$(serviceName)/master/deployment.yaml'
   DeploymentConfigPath: '/home/ec2-user/deployments/$(serviceName)/$(releaseTag)/deployment.yaml'
@@ -71,7 +72,7 @@ stages:
                 commands: 'k3s kubectl rollout status deployment.v1.apps/$(serviceName)'
 
 - stage: CallTestRunner
-  displayName: Call Test Runner
+  displayName: Combo Testing
   jobs:  
   - job: CallAPI
     displayName: Call TestRunner API
@@ -85,7 +86,7 @@ stages:
         inlineScript: |-
           # You can write your powershell scripts inline here.
           # You can also pass predefined and custom variables to this scripts using arguments
-          $C = Invoke-RestMethod -Uri http://54.208.9.185/servicetest/api/superstudentdiscounttestrunner -TimeoutSec 10
+          $C = Invoke-RestMethod -Uri http://$(ServerIP)/servicetest/api/superstudentdiscounttestrunner -TimeoutSec 10
           if ($C.hasAllTestRunsPass)
           {
               Write-Host "Test Passed"
@@ -94,7 +95,33 @@ stages:
           else
           {
               Write-Host "Test failed"
-              Write-Host "http://54.208.9.185/combtestdiscount"
+              Write-Host "http://$(ServerIP)/combtestdiscount"
               exit -1
+          }
+
+- stage: CallE2E
+  displayName: E2E testing
+  jobs:  
+  - job: CallAPI
+    displayName: Call TestRunner API
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: PowerShell@1
+      displayName: 'PowerShell Script'
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |-
+          try 
+          {
+             $C = Invoke-RestMethod -Uri http://$(ServerIP)/serviceuitest/ap/e2e -TimeoutSec 10
+             Write-Host "E2E tests passed"
+          } 
+          catch 
+          {
+             Write-Host "E2E test failed"
+             Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
+             Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
+             return -1
           }
               
