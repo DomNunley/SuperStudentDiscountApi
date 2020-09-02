@@ -25,7 +25,7 @@ namespace SuperStudentDiscountApi.Controllers
             //{
             //    status = result ? $"{discountDTO.State} updated" : "{discountDTO.State} NOT updated"
             //};
-            //return Ok(response);
+            //return Ok(response);//
             return Ok();
         }
 
