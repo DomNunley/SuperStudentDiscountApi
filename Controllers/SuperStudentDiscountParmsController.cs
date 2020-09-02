@@ -20,13 +20,13 @@ namespace SuperStudentDiscountApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] SuperStudentDiscountDTO discountDTO)
         {
-            bool result = await _superStudentDiscountMap.UpdateDiscount(discountDTO);
-            var response = new
-            {
-                status =  result ? $"{discountDTO.State} updated": "{discountDTO.State} NOT updated"
-            };
-            return Ok(response);
-            //return Ok();
+            //bool result = await _superStudentDiscountMap.UpdateDiscount(discountDTO);
+            //var response = new
+            //{
+            //    status =  result ? $"{discountDTO.State} updated": "{discountDTO.State} NOT updated"
+            //};
+            //return Ok(response);
+            return Ok();
         }
 
         [HttpGet]
